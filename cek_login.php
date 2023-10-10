@@ -1,0 +1,36 @@
+<?php
+require 'koneksi.php';
+session_start();
+$kon = new koneksi();
+
+$user = $_POST['Username'];
+$pass = $_POST['Password'];
+$query = "SELECT * FROM user WHERE Username = '$user' and Password = '$pass'";
+$result = $kon->execute($query);
+$num = mysqli_num_rows($result);
+
+while ($row = mysqli_fetch_array($result)) {
+    $idUser = $row['Id_User'];
+    $Username = $row['Username'];
+    $namaUser = $row['Nama_User'];
+    $email = $row['Email'];
+    $level = $row['Level'];
+}
+
+if ($num != 0) {
+    $_SESSION["statusLogin"] = "true";
+    $_SESSION["namaUser"] = $namaUser;
+    $_SESSION['level'] = $level;
+    $_SESSION["idUser"] = $idUser;
+    // var_dump($_SESSION);
+    header('location:main.php');
+} else {
+    session_destroy();
+?>
+    <script>
+        alert('Username atau Password tidak ditemukan');
+        window.location = "login.php";
+    </script>
+<?php
+}
+?>
