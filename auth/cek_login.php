@@ -1,5 +1,5 @@
 <?php
-require 'koneksi.php';
+require '../koneksi.php';
 session_start();
 $kon = new koneksi();
 
@@ -19,18 +19,18 @@ while ($row = mysqli_fetch_array($result)) {
 }
 
 if ($num != 0) {
-    $_SESSION["statusLogin"] = "true";
+    $_SESSION["statusLogin"] = "Berhasil Login";
     $_SESSION["namaUser"] = $namaUser;
     $_SESSION['level'] = $level;
     $_SESSION["idUser"] = $idUser;
     // var_dump($_SESSION["namaUser"]);
-    header('location:main.php');
+    header('location: ../layout/main.php');
 } else {
     session_destroy();
 ?>
     <script>
         alert('Username atau Password tidak ditemukan');
-        window.location = "login.php";
+        window.location = "index.php";
     </script>
 <?php
 }

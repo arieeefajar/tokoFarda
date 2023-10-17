@@ -19,7 +19,7 @@ if (isset($_POST['ubah'])) {
         $_SESSION['error'] = "Gagal mengubah data.";
     }
 
-    header('location:../main.php?page=dataUser');
+    header('location:../layout/main.php?page=dataUser');
 
     // var_dump($result);
 }

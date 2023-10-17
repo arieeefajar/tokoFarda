@@ -19,7 +19,5 @@ if (isset($_POST['simpan'])) {
     } else {
         $_SESSION['error'] = "Gagal menambahkan data.";
     }
-    header('location:../main.php?page=dataUser');
-
-    // var_dump($result);
+    header('Location: ../layout/main.php?page=dataUser');
 }

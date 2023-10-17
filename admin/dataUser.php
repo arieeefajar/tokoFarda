@@ -1,5 +1,5 @@
 <?php
-require 'koneksi.php';
+require '../koneksi.php';
 $kon = new koneksi();
 
 $query = "SELECT * FROM user";
@@ -81,7 +81,7 @@ $result = $kon->showData($query);
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="./userController/tambah.php" method="post">
+                <form action="../userController/tambah.php" method="post">
                     <div class="mb-3">
                         <label for="">Username</label>
                         <input type="text" name="Username" class="form-control" placeholder="Masukan Username" required>
@@ -126,7 +126,7 @@ $result = $kon->showData($query);
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="./userController/edit.php" method="post" id="formEdit">
+                <form action="../userController/edit.php" method="post" id="formEdit">
                     <div class="mb-3">
                         <label for="">Username</label>
                         <input type="text" name="Username" id="usernameEdit" class="form-control" placeholder="Masukan Username" required>
@@ -184,7 +184,7 @@ $result = $kon->showData($query);
         }).then((result) => {
             if (result.isConfirmed) {
                 // Jika konfirmasi di-setujui, arahkan ke file hapus.php dengan userId sebagai parameter
-                window.location.href = `./userController/hapus.php?id=${userId}`;
+                window.location.href = `../userController/hapus.php?id=${userId}`;
             }
         });
     }

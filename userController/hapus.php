@@ -15,6 +15,6 @@ if (isset($_GET['id'])) {
     } else {
         $_SESSION['error'] = "Gagal menghapus data.";
     }
-
-    header('location:../main.php?page=dataUser');
+    header('Location: ../layout/main.php?page=dataUser');
+    // header('location:..main.php?page=dataUser');
 }
