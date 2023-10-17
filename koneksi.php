@@ -4,7 +4,7 @@ class koneksi
     private $server = "localhost";
     private $username = "root";
     private $password = "";
-    private $db = "tokoFarda";
+    private $db = "toko_farda_new";
 
     public function prepareKoneksi()
     {
