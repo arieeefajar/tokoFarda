@@ -8,9 +8,10 @@ if (isset($_POST['simpan'])) {
     $namaUser = $_POST['Nama_User'];
     $email = $_POST['Email'];
     $pass = $_POST['Password'];
+    $hash = md5($pass);
     $level = $_POST['Level'];
 
-    $query = "INSERT INTO user (Username,Nama_User,Email,Password,Level) value ('$username','$namaUser','$email',md5($pass),'$level')";
+    $query = "INSERT INTO user (Username,Nama_User,Email,Password,Level) value ('$username','$namaUser','$email','$hash','$level')";
     $result = $kon->execute($query);
 
     if ($result == true) {
