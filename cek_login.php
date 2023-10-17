@@ -5,7 +5,8 @@ $kon = new koneksi();
 
 $user = $_POST['Username'];
 $pass = $_POST['Password'];
-$query = "SELECT * FROM user WHERE Username = '$user' and Password = '$pass'";
+$hash = md5($pass);
+$query = "SELECT * FROM user WHERE Username = '$user' and Password = '$hash'";
 $result = $kon->execute($query);
 $num = mysqli_num_rows($result);
 
