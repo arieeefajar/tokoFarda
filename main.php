@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+// var_dump($_SESSION["idUser"]);
+if (!isset($_SESSION["idUser"])) {
+    echo '<script>alert("Harap login terlebih dahulu");
+    window.location.href=("index.php")</script>';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +38,7 @@ session_start();
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <!-- sweetalert -->
-    <link rel="stylesheet" href="<?= 'http://localhost/tokoFarda/'; ?>sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" href="<?= 'http://localhost/SI/tokoFarda/'; ?>sweetalert2/sweetalert2.min.css">
 
 </head>
 
@@ -105,7 +111,7 @@ session_start();
     <script src="js/demo/datatables-demo.js"></script>
 
     <!-- sweetalert2 -->
-    <script src="<?= 'http://localhost/tokoFarda/'; ?>sweetalert2/sweetalert2.min.js"></script>
+    <script src="<?= 'http://localhost/SI/tokoFarda/'; ?>sweetalert2/sweetalert2.min.js"></script>
 
     <!-- <script>
         Swal.fire({
