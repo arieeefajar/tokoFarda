@@ -1,10 +1,35 @@
 <?php
 require '../koneksi.php';
-$kon = new koneksi();
+require '../controller/userController.php';
 
-$query = "SELECT * FROM user";
-$result = $kon->showData($query);
-// var_dump($result);
+$crud = new crud();
+$result = $crud->index();
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') :
+    $action = $_POST['action'];
+
+    if ($action === 'add') {
+        $username = $_POST['Username'];
+        $namaUser = $_POST['Nama_User'];
+        $email = $_POST['Email'];
+        $pass = $_POST['Password'];
+        $hash = md5($pass);
+        $level = $_POST['Level'];
+        $crud->tambah($username, $namaUser, $email, $hash, $level);
+    } elseif ($action === 'edit') {
+        $id = $_POST['Id_User'];
+        $username = htmlspecialchars($_POST['Username']);
+        $namaUser = htmlspecialchars($_POST['Nama_User']);
+        $email = htmlspecialchars($_POST['Email']);
+        $level = htmlspecialchars($_POST['Level']);
+        $crud->edit($username, $namaUser, $email, $level, $id);
+    } elseif ($action === 'delete') {
+        if (isset($_POST['id'])) {
+            $id = htmlspecialchars($_POST['id']);
+            $crud->hapus($id);
+        }
+    }
+endif;
 ?>
 
 <div id="content">
@@ -58,7 +83,6 @@ $result = $kon->showData($query);
                                         <button type="button" class="btn btn-danger" onclick="confirmDelete(<?= $data['Id_User']; ?>)">
                                             Hapus
                                         </button>
-                                        <!-- <a href="./userController/hapus.php?id=<?= $data['Id_User']; ?>" class="btn btn-danger">Hapus</a> -->
                                     </td>
                                 </tr>
                             <?php endforeach ?>
@@ -70,8 +94,6 @@ $result = $kon->showData($query);
     </div>
 </div>
 
-
-
 <!-- TambahModal -->
 <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -81,7 +103,7 @@ $result = $kon->showData($query);
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="../userController/tambah.php" method="post">
+                <form action="<?= $_SERVER['PHP_SELF']; ?>?page=dataUser" method="POST">
                     <div class="mb-3">
                         <label for="">Username</label>
                         <input type="text" name="Username" class="form-control" placeholder="Masukan Username" required>
@@ -107,6 +129,8 @@ $result = $kon->showData($query);
                             <option value="Owner">Owner</option>
                         </select>
                     </div>
+
+                    <input type="hidden" name="action" value="add">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" name="simpan" class="btn btn-primary">Simpan</button>
@@ -126,7 +150,7 @@ $result = $kon->showData($query);
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="../userController/edit.php" method="post" id="formEdit">
+                <form action="<?= $_SERVER['PHP_SELF']; ?>?page=dataUser" method="post" id="formEdit">
                     <div class="mb-3">
                         <label for="">Username</label>
                         <input type="text" name="Username" id="usernameEdit" class="form-control" placeholder="Masukan Username" required>
@@ -150,6 +174,7 @@ $result = $kon->showData($query);
                     </div>
 
                     <input type="hidden" name="Id_User" id="idEdit">
+                    <input type="hidden" name="action" value="edit">
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -160,6 +185,11 @@ $result = $kon->showData($query);
         </div>
     </div>
 </div>
+
+<form action="<?= $_SERVER['PHP_SELF']; ?>?page=dataUser" id="formDelete" method="POST">
+    <input type="hidden" name="id" id="idDelete">
+    <input type="hidden" name="action" value="delete">
+</form>
 
 <script>
     function edit(data) {
@@ -172,6 +202,7 @@ $result = $kon->showData($query);
     };
 
     function confirmDelete(userId) {
+        console.log(userId);
         Swal.fire({
             title: 'Konfirmasi Hapus',
             text: 'Anda yakin ingin menghapus data?',
@@ -183,8 +214,8 @@ $result = $kon->showData($query);
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Jika konfirmasi di-setujui, arahkan ke file hapus.php dengan userId sebagai parameter
-                window.location.href = `../userController/hapus.php?id=${userId}`;
+                document.getElementById('idDelete').value = userId;
+                document.getElementById('formDelete').submit();
             }
         });
     }
