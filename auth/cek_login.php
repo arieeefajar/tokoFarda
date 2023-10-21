@@ -23,8 +23,9 @@ if ($num != 0) {
     $_SESSION["namaUser"] = $namaUser;
     $_SESSION['level'] = $level;
     $_SESSION["idUser"] = $idUser;
-    // var_dump($_SESSION["namaUser"]);
-    header('location: ../layout/main.php');
+    $_SESSION["Level"] = $level;
+
+    header('location: ../layout/home.php');
 } else {
     session_destroy();
 ?>
