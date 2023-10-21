@@ -2,4 +2,4 @@
 session_start();
 session_destroy();
 
-header('location: ../auth/index.php');
+header('location: ../index.php');

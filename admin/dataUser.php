@@ -32,64 +32,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') :
 endif;
 ?>
 
-<div id="content">
 
-    <!-- Begin Page Content -->
-    <div class="container-fluid">
-
-        <!-- DataTales Example -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary" data-bs-toggle="modal" data-bs-target="#tambahModal">Data User</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahModal">
-                            <i class="fas fa-plus"></i> Tambah User
-                        </button>
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Username</th>
-                                <th>Nama User</th>
-                                <th>Email</th>
-                                <th>Level</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>No</th>
-                                <th>Username</th>
-                                <th>Nama User</th>
-                                <th>Email</th>
-                                <th>Level</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            <?php foreach ($result as $key => $data) : ?>
-                                <tr>
-                                    <td><?= $key + 1; ?></td>
-                                    <td><?= $data['Username']; ?></td>
-                                    <td><?= $data['Nama_User']; ?></td>
-                                    <td><?= $data['Email']; ?></td>
-                                    <td><?= $data['Level']; ?></td>
-                                    <td>
-                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal" onclick='edit(<?= json_encode($data); ?>)'>
-                                            Edit
-                                        </button>
-                                        <button type="button" class="btn btn-danger" onclick="confirmDelete(<?= $data['Id_User']; ?>)">
-                                            Hapus
-                                        </button>
-                                    </td>
-                                </tr>
-                            <?php endforeach ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" data-bs-toggle="modal" data-bs-target="#tambahModal">Data User</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <button type="button" class="btn btn-primary btn-icon-split mb-3" data-bs-toggle="modal" data-bs-target="#tambahModal">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Tambah User</span>
+                </button>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Username</th>
+                        <th>Nama User</th>
+                        <th>Email</th>
+                        <th>Level</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>No</th>
+                        <th>Username</th>
+                        <th>Nama User</th>
+                        <th>Email</th>
+                        <th>Level</th>
+                        <th>Aksi</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <?php foreach ($result as $key => $data) : ?>
+                        <tr>
+                            <td><?= $key + 1; ?></td>
+                            <td><?= $data['Username']; ?></td>
+                            <td><?= $data['Nama_User']; ?></td>
+                            <td><?= $data['Email']; ?></td>
+                            <td><?= $data['Level']; ?></td>
+                            <td>
+                                <button type="button" class="btn btn-warning btn-icon-split" data-bs-toggle="modal" data-bs-target="#editModal" onclick='edit(<?= json_encode($data); ?>)'>
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-pen"></i>
+                                    </span>
+                                    <span class="text">Edit</span>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-icon-split" onclick="confirmDelete(<?= $data['Id_User']; ?>)">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                    <span class="text">Hapus</span>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
