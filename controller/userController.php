@@ -1,6 +1,4 @@
 <?php
-// session_start();
-// require '../koneksi.php';
 class crud extends koneksi
 {
     public function index()
