@@ -189,6 +189,7 @@ endif;
     </div>
 </div>
 
+<!-- form delete -->
 <form action="<?= $_SERVER['PHP_SELF']; ?>?page=dataUser" id="formDelete" method="POST">
     <input type="hidden" name="id" id="idDelete">
     <input type="hidden" name="action" value="delete">

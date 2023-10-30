@@ -31,7 +31,7 @@ if ($num != 0) {
 ?>
     <script>
         alert('Username atau Password tidak ditemukan');
-        window.location = "index.php";
+        window.location = "../index.php";
     </script>
 <?php
 }
