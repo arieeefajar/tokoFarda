@@ -76,17 +76,11 @@ endif;
                             <td><?= $data['Email']; ?></td>
                             <td><?= $data['Level']; ?></td>
                             <td>
-                                <button type="button" class="btn btn-warning btn-icon-split" data-bs-toggle="modal" data-bs-target="#editModal" onclick='edit(<?= json_encode($data); ?>)'>
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-pen"></i>
-                                    </span>
-                                    <span class="text">Edit</span>
+                                <button type="button" class="btn btn-warning btn-circle" data-bs-toggle="modal" data-bs-target="#editModal" onclick='edit(<?= json_encode($data); ?>)'>
+                                    <i class="fas fa-pen"></i>
                                 </button>
-                                <button type="button" class="btn btn-danger btn-icon-split" onclick="confirmDelete(<?= $data['Id_User']; ?>)">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-trash"></i>
-                                    </span>
-                                    <span class="text">Hapus</span>
+                                <button type="button" class="btn btn-danger btn-circle" onclick="confirmDelete(<?= $data['Id_User']; ?>)">
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </td>
                         </tr>
