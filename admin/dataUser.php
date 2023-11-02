@@ -75,7 +75,7 @@ endif;
                             <td><?= $data['Nama_User']; ?></td>
                             <td><?= $data['Email']; ?></td>
                             <td><?= $data['Level']; ?></td>
-                            <td>
+                            <td class="text-center">
                                 <button type="button" class="btn btn-warning btn-circle" data-bs-toggle="modal" data-bs-target="#editModal" onclick='edit(<?= json_encode($data); ?>)'>
                                     <i class="fas fa-pen"></i>
                                 </button>
