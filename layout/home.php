@@ -79,6 +79,10 @@ if (!isset($_SESSION["idUser"])) {
                         include '../admin/dataUser.php';
                     } elseif ($_GET['page'] == 'dataBarang') {
                         include '../admin/dataBarang.php';
+                    } elseif ($_GET['page'] == 'transaksiJual') {
+                        include '../admin/transaksiJual.php';
+                    } elseif ($_GET['page'] == 'keranjang') {
+                        include '../admin/keranjang.php';
                     }
                     ?>
 
