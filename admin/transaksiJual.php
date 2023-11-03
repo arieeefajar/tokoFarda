@@ -145,6 +145,7 @@ $result = $transaksiJual->showBarang();
                     <input type="hidden" name="Kode_Barang" id="kodeBarang">
                     <input type="hidden" name="Stok" id="stok">
                     <input type="hidden" id="hargaJual">
+                    <input type="hidden" id="subtotal1">
 
                     <div class="modal-footer">
                         <button type="button" id="tutup" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -186,7 +187,6 @@ $result = $transaksiJual->showBarang();
             style: 'currency',
             currency: 'IDR'
         });
-        // console.log(format);
 
         if (jumlah1 > stok) {
             Swal.fire({
@@ -201,6 +201,7 @@ $result = $transaksiJual->showBarang();
             button.disabled = true;
         } else {
             document.getElementById('subtotal').value = format;
+            document.getElementById('subtotal1').value = hasil;
             var button = document.getElementById('tambah');
             button.disabled = false;
         }
@@ -214,19 +215,23 @@ $result = $transaksiJual->showBarang();
         var harga = document.getElementById('harga').value;
         var jumlah = document.getElementById('jumlah').value;
         var subtotal = document.getElementById('subtotal').value;
+        var subtotal1 = parseInt(document.getElementById('subtotal1').value);
         var kodeBarang = document.getElementById('kodeBarang').value;
 
         var dataBarang = {
             namaBarang: namaBarang,
             harga: harga,
             jumlah: jumlah,
-            subtotal: subtotal,
+            subtotal: subtotal1,
             kodeBarang: kodeBarang
         }
+        // var subtotal = dataBarang.subtotal
+        var format = subtotal.toLocaleString('id-ID', {
+            style: 'currency',
+            currency: 'IDR'
+        });
 
         var total = barang.push(dataBarang)
-        var subtotal = dataBarang.subtotal
-        // console.log(subtotal);
 
         var cardBody = document.getElementById('detailBelanja');
         var cardFooter = document.getElementById('cardFooter');
@@ -244,7 +249,7 @@ $result = $transaksiJual->showBarang();
 
         var col3 = document.createElement('div');
         col3.classList.add('col-sm-4', 'text-right');
-        col3.innerHTML = '<label for="">' + dataBarang.subtotal + '</label>';
+        col3.innerHTML = '<label for="">' + format + '</label>';
 
         row.appendChild(col1);
         row.appendChild(col2);
@@ -267,14 +272,17 @@ $result = $transaksiJual->showBarang();
 
         document.getElementById('tutup').click();
 
-        // console.log(barang);
-
         let totalBelanja = 0;
         barang.forEach(data => {
-            totalBelanja += data.subtotal
-            console.log(data.subtotal);
+            totalBelanja += (data.subtotal)
         });
-        document.getElementById('total').textContent = totalBelanja;
+
+        var total = totalBelanja.toLocaleString('id-ID', {
+            style: 'currency',
+            currency: 'IDR'
+        });
+
+        document.getElementById('total').textContent = total;
     }
 
     function validateInput(input) {
