@@ -83,6 +83,8 @@ if (!isset($_SESSION["idUser"])) {
                         include '../admin/transaksiJual.php';
                     } elseif ($_GET['page'] == 'keranjang') {
                         include '../admin/keranjang.php';
+                    } elseif ($_GET['page'] == 'transaksiBeli') {
+                        include '../admin/transaksiBeli.php';
                     }
                     ?>
 
