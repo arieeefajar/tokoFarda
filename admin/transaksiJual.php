@@ -5,6 +5,26 @@ require '../controller/transaksiJual.php';
 $transaksiJual = new transaksiJual();
 $result = $transaksiJual->showBarang();
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $bayar = $_POST['bayar1'];
+    $total = $_POST['total'];
+    $idUser = $_SESSION['idUser'];
+    $kodeBarang = $_POST['kodeBarang'];
+    $jumlah = $_POST['jumlah'];
+    $subtotal = $_POST['subtotal'];
+    $totalBarang = $_POST['jumlahBarang'];
+    $status = $_POST['status'];
+    // $namaPelanggan = $_POST['Nama_Pelanggan'];
+    // $noTelp = $_POST['No_Telp'];
+    // $alamat = $_POST['Alamat'];
+    // $jumlahHutang = $_POST['Jumlah_Hutang'];
+
+
+    // var_dump($namaPelanggan, $noTelp, $alamat, $jumlahHutang);
+    // var_dump($bayar, $total, $idUser, $kodeBarang, $jumlah, $subtotal, $totalBarang, $status);
+    $transaksiJual->tambah($bayar, $total, $idUser, $kodeBarang, $jumlah, $subtotal, $totalBarang, $status);
+}
+
 ?>
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
@@ -14,7 +34,7 @@ $result = $transaksiJual->showBarang();
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <button type="button" class="btn btn-warning btn-icon-split mb-3" data-bs-toggle="modal" data-bs-target="#kranjangModal">
+                <button type="button" id="buttonKeranjang" class="btn btn-warning btn-icon-split mb-3" data-bs-toggle="modal" data-bs-target="#kranjangModal" onclick="funcBayar()">
                     <span class="icon text-white-50">
                         <i class="fas fa-cart-arrow-down"></i>
                     </span>
@@ -67,7 +87,7 @@ $result = $transaksiJual->showBarang();
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Belanja</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="card">
@@ -95,29 +115,41 @@ $result = $transaksiJual->showBarang();
                             </div>
                             <div class="col text-right">
                                 <label for="" id="total"></label>
-                                <input type="hidden" id="totalBelanja">
+                                <input type="hidden" id="total1">
                             </div>
                         </div>
 
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-12">
-                        <label for="">Bayar</label>
-                        <input type="text" class="form-control" id="bayar" oninput="if (this.value !== '') hitungTotal(); validateInput(this)">
-                    </div>
-                    <div class="col-md-12 mt-3">
-                        <label for="">Kembalian</label>
-                        <input type="text" id="kembalian" class="form-control" readonly>
-                    </div>
-                    <div class="col-md-12 mt-3">
-                        <label for="">Status</label>
-                        <input type="text" id="status" class="form-control" readonly>
-                    </div>
+                    <form id="myForm" method="POST">
+                        <div id="formBelanja" style="display: none;">
+
+                        </div>
+                        <div class="col-md-12">
+                            <label for="">Bayar</label>
+                            <input type="text" class="form-control" id="bayar" oninput="if (this.value !== '') funcBayar(); validateInput(this)">
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <label for="">Kembalian</label>
+                            <input type="text" id="kembalian" class="form-control" readonly>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <label for="">Status</label>
+                            <input type="text" id="status" name="status" class="form-control" readonly>
+                        </div>
+
+                        <input type="hidden" id="idUser" name="idUser" value="<?= $_SESSION['idUser']; ?>">
+                        <input type="hidden" id="bayar1" name="bayar1">
+                        <input type="hidden" id="jumlahBarang" name="jumlahBarang">
+                        <input type="hidden" id="total2" name="total">
+                    </form>
                 </div>
             </div>
             <div class="modal-footer">
-
+                <button class="btn btn-primary" onclick="submitForm()" id="simpan">Simpan</button>
+                <button type="button" id="buttonHutang" class="btn btn-primary btn-circle" data-bs-toggle="modal" data-bs-target="#hutangModal" style="display: none;">
+                </button>
             </div>
         </div>
     </div>
@@ -132,7 +164,7 @@ $result = $transaksiJual->showBarang();
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" onsubmit="return validateForm()">
+                <form action="">
                     <div class="mb-3">
                         <label for="">Nama Barang</label>
                         <input type="text" name="Nama_Barang" id="namaBarang" class="form-control" readonly required>
@@ -157,7 +189,43 @@ $result = $transaksiJual->showBarang();
 
                     <div class="modal-footer">
                         <button type="button" id="tutup" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" id="tambah" disabled="true" class="btn btn-primary" onclick="tambahBarang()">Tambah Keranjang</button>
+                        <button type="button" id="tambah" disabled="true" class="btn btn-primary" onclick="tambahBarang()">Tambah Keranjang</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- hutang modal -->
+<div class="modal fade" id="hutangModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Hutang</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" id="formHutang">
+                    <div class="mb-3">
+                        <label for="">Nama Pelanggan</label>
+                        <input type="text" name="Nama_Pelanggan" id="namaPelanggan" class="form-control" required>
+                    </div>
+                    <div class=" mb-3">
+                        <label for="">No Telp</label>
+                        <input type="text" name="No_Telp" id="noTelp" class="form-control" pattern="(\+62|62|0)8[1-9][0-9]{8,9}$" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateTelp(this);" oninvalid="validateTelp(this);" required>
+                    </div>
+                    <div class=" mb-3">
+                        <label for="">Alamat</label>
+                        <textarea name="Alamat" id="alamat" cols="30" rows="5" class="form-control"></textarea>
+                    </div>
+                    <div class="" id="">
+                        <label for="">Jumlah Hutang</label>
+                        <input type="text" id="jumlahHutang" class="form-control" required readonly>
+                        <input type="hidden" name="Jumlah_Hutang" id="jumlahHutang1">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="buttonHutang" class=" btn btn-primary" onclick="simpanHutang()">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -166,6 +234,14 @@ $result = $transaksiJual->showBarang();
 </div>
 
 <script>
+    var keranjangBelanja = {}
+    const buttonKeranjang = document.getElementById('buttonKeranjang');
+    const keranjangKeys = Object.keys(keranjangBelanja);
+
+    if (keranjangKeys.length === 0) {
+        buttonKeranjang.disabled = true;
+    }
+
     function detail(data) {
         // console.log(data);
         var hargaJual = parseInt(data.Harga_Jual)
@@ -224,62 +300,6 @@ $result = $transaksiJual->showBarang();
         }
     }
 
-    function hitungTotal() {
-        var total = document.getElementById('totalBelanja').value;
-        var kembalian = document.getElementById('kembalian');
-        var status = document.getElementById('status');
-        var bayar = document.getElementById('bayar').value;
-        var uang = parseInt(bayar.replace(/,/g, ''), 10);
-
-        var sisa = uang - total;
-
-        var format = sisa.toLocaleString('id-ID', {
-            style: 'currency',
-            currency: 'IDR'
-        });
-
-        if (uang < total) {
-            // console.log("Kurang");
-            kembalian.value = 0;
-            status.value = "hutang";
-        } else {
-            // console.log(sisa);
-            kembalian.value = format;
-            status.value = "lunas";
-        }
-
-    }
-
-    var barang = [];
-    console.log(barang);
-    var namaBarangSet = new Set();
-
-    function cekNamaBarang(arr) {
-        for (var i = 0; i < arr.length; i++) {
-            if (namaBarangSet.has(arr[i].namaBarang)) {
-                return true;
-            }
-            namaBarangSet.add(arr[i].namaBarang);
-        }
-        // console.log(namaBarangSet);
-        return false;
-    }
-
-    function jumlahBarangAda(barang, kodeBarang) {
-        var totalJumlah = 0;
-        var subtotal = 0;
-        for (let i = 0; i < barang.length; i++) {
-            if (barang[i].kodeBarang === kodeBarang) {
-                totalJumlah += barang[i].jumlah;
-                subtotal += barang[i].subtotal;
-            }
-        }
-        return {
-            totalJumlah,
-            subtotal
-        };
-    }
-
     function tambahBarang() {
         var namaBarang = document.getElementById('namaBarang').value;
         var harga = document.getElementById('harga').value;
@@ -297,49 +317,17 @@ $result = $transaksiJual->showBarang();
                 timer: 2000
             });
         } else {
-            var dataBarang = {
-                namaBarang: namaBarang,
-                harga: harga,
-                jumlah: jumlah,
-                subtotal: subtotal1,
-                kodeBarang: kodeBarang
+            // console.log(jumlah, subtotal1);
+            if (keranjangBelanja[kodeBarang]) {
+                keranjangBelanja[kodeBarang].jumlah += jumlah;
+                keranjangBelanja[kodeBarang].subtotal += subtotal1;
+            } else {
+                keranjangBelanja[kodeBarang] = {
+                    namaBarang: namaBarang,
+                    jumlah: jumlah,
+                    subtotal: subtotal1,
+                }
             }
-            console.log(dataBarang);
-            var format = subtotal.toLocaleString('id-ID', {
-                style: 'currency',
-                currency: 'IDR'
-            });
-
-            var total = barang.push(dataBarang)
-
-            var cardBody = document.getElementById('detailBelanja');
-
-            var row = document.createElement('div');
-            row.classList.add('row');
-
-            var col1 = document.createElement('div');
-            col1.classList.add('col-sm-6');
-
-            var col2 = document.createElement('div');
-            col2.classList.add('col-sm-2', 'text-center');
-
-            var col3 = document.createElement('div');
-            col3.classList.add('col-sm-4', 'text-right');
-
-            col1.innerHTML = '<label for="" class="namaBarang">' + dataBarang.namaBarang + '</label>';
-            col2.innerHTML = '<label for="">' + dataBarang.jumlah + '<sup>x</sup></label>';
-            col3.innerHTML = '<label for="">' + format + '</label>';
-
-            row.appendChild(col1);
-            row.appendChild(col2);
-            row.appendChild(col3);
-            cardBody.appendChild(row);
-
-            document.getElementById('jumlah').value = "";
-            document.getElementById('subtotal').value = "";
-
-            var count = document.getElementById('count');
-            count.textContent = total;
 
             Swal.fire({
                 position: 'center',
@@ -348,23 +336,177 @@ $result = $transaksiJual->showBarang();
                 showConfirmButton: false,
                 timer: 1500
             });
-
+            document.getElementById('jumlah').value = "";
+            document.getElementById('subtotal').value = "";
             document.getElementById('tutup').click();
+            buttonKeranjang.disabled = false;
 
-            let totalBelanja = 0;
-            barang.forEach(data => {
-                totalBelanja += (data.subtotal)
-            });
+            perbaruiTampilanKeranjang();
+        }
+    }
 
-            var total = totalBelanja.toLocaleString('id-ID', {
+    function perbaruiTampilanKeranjang() {
+        // console.log('oke');
+        const keranjangElement = document.getElementById('detailBelanja');
+        const formBelanja = document.getElementById('formBelanja');
+        const count = document.getElementById('count');
+        const jumlahBarang = document.getElementById('jumlahBarang');
+        const totalBarang = Object.values(keranjangBelanja).length;
+
+        keranjangElement.innerHTML = "";
+        formBelanja.innerHTML = "";
+        count.textContent = totalBarang;
+        jumlahBarang.value = totalBarang
+
+        for (const kodeBarang in keranjangBelanja) {
+            const {
+                namaBarang,
+                jumlah,
+                subtotal,
+            } = keranjangBelanja[kodeBarang];
+
+            var format = subtotal.toLocaleString('id-ID', {
                 style: 'currency',
                 currency: 'IDR'
             });
 
-            document.getElementById('total').textContent = total;
-            document.getElementById('totalBelanja').value = totalBelanja;
+            var row = document.createElement('div');
+            row.classList.add('row');
+
+            var col1 = document.createElement('div');
+            col1.classList.add('col-sm-6');
+            col1.innerHTML = `${namaBarang}`;
+
+            var col2 = document.createElement('div');
+            col2.classList.add('col-sm-2', 'text-center');
+            col2.innerHTML = `${jumlah}<sup>x</sup>`;
+
+            var col3 = document.createElement('div');
+            col3.classList.add('col-sm-4', 'text-right');
+            col3.innerHTML = format;
+
+            var col4 = document.createElement('div');
+            col4.style.display = 'none';
+            col4.innerHTML = `${kodeBarang}`;
+
+            var inputKodeBarang = document.createElement('input');
+            inputKodeBarang.type = 'hidden';
+            inputKodeBarang.name = 'kodeBarang[]';
+            inputKodeBarang.value = `${kodeBarang}`;
+
+            var inputJumlah = document.createElement('input');
+            inputJumlah.type = 'hidden';
+            inputJumlah.name = 'jumlah[]';
+            inputJumlah.value = `${jumlah}`;
+
+            var inputSubtotal = document.createElement('input');
+            inputSubtotal.type = 'hidden';
+            inputSubtotal.name = 'subtotal[]';
+            inputSubtotal.value = `${subtotal}`;
+
+            row.appendChild(col1);
+            row.appendChild(col2);
+            row.appendChild(col3);
+            row.appendChild(col4);
+            keranjangElement.appendChild(row);
+            formBelanja.appendChild(inputKodeBarang);
+            formBelanja.appendChild(inputJumlah);
+            formBelanja.appendChild(inputSubtotal);
+
+            const totalBelanja = document.getElementById('total')
+            const totalBelanja1 = document.getElementById('total1')
+            const totalBelanja2 = document.getElementById('total2')
+            const total = Object.values(keranjangBelanja).reduce(function(accumulator, barang) {
+                return accumulator + barang.subtotal;
+            }, 0);
+            var format1 = total.toLocaleString('id-ID', {
+                style: 'currency',
+                currency: 'IDR'
+            });
+
+
+            totalBelanja.textContent = format1
+            totalBelanja1.value = total
+            totalBelanja2.value = total
         }
+        // console.log(format1);
     }
+
+    function funcBayar() {
+        const totalBelanja = parseInt(document.getElementById('total1').value)
+        const bayar = document.getElementById('bayar').value
+        const bayar1 = document.getElementById('bayar1')
+        const uang = parseInt(bayar.replace(/,/g, ''), 10);
+        const kembalian = document.getElementById('kembalian')
+        const status = document.getElementById('status')
+        const jumlahHutang = document.getElementById('jumlahHutang')
+        const jumlahHutang1 = document.getElementById('jumlahHutang1')
+
+        const sisa = uang - totalBelanja;
+        const sisa1 = totalBelanja - uang;
+
+        var format = sisa.toLocaleString('id-ID', {
+            style: 'currency',
+            currency: 'IDR'
+        });
+
+        var format1 = sisa1.toLocaleString('id-ID', {
+            style: 'currency',
+            currency: 'IDR'
+        });
+
+        if (uang < totalBelanja) {
+            kembalian.value = "Rp." + 0;
+            status.value = 'hutang';
+            jumlahHutang.value = format1;
+            jumlahHutang1.value = sisa1;
+        } else {
+            // if (isNaN(sisa) || isNaN(format)) {
+            //     kembalian.value = "Rp. 0";
+            // } else {
+            //     console.log(format);
+            //     kembalian.value = format;
+            // }
+            kembalian.value = format;
+            bayar1.value = uang;
+            status.value = 'lunas';
+        }
+        // console.log(jumlahHutang1.value);
+    }
+
+    function submitForm() {
+        const form = document.getElementById("myForm");
+        const status = document.getElementById('status').value
+        const close = document.getElementById('close');
+        const buttonHutang = document.getElementById('buttonHutang');
+
+        form.action = "<?= $_SERVER['PHP_SELF']; ?>?page=transaksiJual";
+        form.method = "POST"
+        form.submit();
+
+        // if (status == 'hutang') {
+        //     buttonHutang.click();
+        //     close.click();
+        // } else {
+        //     form.action = "<?= $_SERVER['PHP_SELF']; ?>?page=transaksiJual";
+        //     form.method = "POST"
+        //     form.submit();
+        // }
+    }
+
+    // function simpanHutang() {
+    //     // console.log('Oke');
+    //     const formHutang = document.getElementById('formHutang')
+    //     // const form = document.getElementById("myForm");
+
+    //     // form.action = "<?= $_SERVER['PHP_SELF']; ?>?page=transaksiJual";
+    //     // form.method = "POST";
+    //     // form.submit();
+
+    //     formHutang.action = "<?= $_SERVER['PHP_SELF']; ?>?page=transaksiJual";
+    //     formHutang.method = 'POST';
+    //     formHutang.submit();
+    // }
 
     function validateInput(input) {
         // input.value = input.value.replace(/\D/g, "");
@@ -375,6 +517,10 @@ $result = $transaksiJual->showBarang();
         }
 
         input.value = value;
+    }
+
+    function validateTelp(input) {
+        console.log("oke");
     }
 
     function rupiah($angka) {

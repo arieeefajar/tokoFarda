@@ -1,25 +1,40 @@
 <?php
 require '../koneksi.php';
 require '../controller/transaksiBeli.php';
+// session_start();
 
 $transaksiBeli = new transaksiBeli();
 $result = $transaksiBeli->showBarang();
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $bayar = $_POST['bayar1'];
+    $total = $_POST['total'];
+    $idUser = $_SESSION['idUser'];
+    $kodeBarang = $_POST['kodeBarang'];
+    $jumlah = $_POST['jumlah'];
+    $subtotal = $_POST['subtotal'];
+    $totalBarang = $_POST['jumlahBarang'];
+
+
+    // var_dump($bayar, $total, $idUser, $kodeBarang, $jumlah, $subtotal, $totalBarang);
+    $transaksiBeli->tambah($bayar, $total, $idUser, $kodeBarang, $jumlah, $subtotal, $totalBarang);
+}
 
 ?>
 
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary" data-bs-toggle="modal" data-bs-target="#tambahModal">Data Barang</h6>
+        <h6 class="m-0 font-weight-bold text-primary" data-bs-toggle="modal" data-bs-target="#tambahModal">Data Barang Beli</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <button type="button" id="buttonKeranjang" class="btn btn-warning btn-icon-split mb-3" data-bs-toggle="modal" data-bs-target="#kranjangModal" onclick="bayar()">
+                <button type="button" id="buttonKeranjang" class="btn btn-warning btn-icon-split mb-3" data-bs-toggle="modal" data-bs-target="#kranjangModal" onclick="funcBayar()">
                     <span class="icon text-white-50">
                         <i class="fas fa-cart-arrow-down"></i>
                     </span>
-                    <span class="text">Keranjang <sup id="count">x</sup></span>
+                    <span class="text">Keranjang <sup id="count"></sup></span>
                 </button>
                 <thead>
                     <tr>
@@ -102,21 +117,29 @@ $result = $transaksiBeli->showBarang();
 
                     </div>
                 </div>
-                <!-- <div class="card">
-                    <div class="card-body">
-                        <ul id="keranjang"></ul>
-                    </div>
-                </div> -->
                 <div class="row mt-3">
-                    <div class="col-md-12">
-                        <label for="">Bayar</label>
-                        <input type="text" class="form-control" id="bayar" oninput="bayar(); validateInput(this)">
-                    </div>
-                    <div class="col-md-12 mt-3">
-                        <label for="">Kembalian</label>
-                        <input type="text" id="kembalian" class="form-control" readonly>
-                    </div>
+                    <form id="myForm" method="POST">
+                        <div id="formBelanja" style="display: none;">
+
+                        </div>
+                        <div class="col-md-12">
+                            <label for="">Bayar</label>
+                            <input type="text" class="form-control" id="bayar" oninput="funcBayar(); validateInput(this)">
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <label for="">Kembalian</label>
+                            <input type="text" id="kembalian" class="form-control" readonly>
+                        </div>
+
+                        <input type="hidden" id="idUser" name="idUser" value="<?= $_SESSION['idUser']; ?>">
+                        <input type="hidden" id="bayar1" name="bayar1">
+                        <input type="hidden" id="total2" name="total">
+                        <input type="hidden" id="jumlahBarang" name="jumlahBarang">
+                    </form>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="submitForm()" id="simpan">Simpan</button>
             </div>
         </div>
     </div>
@@ -246,11 +269,15 @@ $result = $transaksiBeli->showBarang();
 
     function perbaruiTampilanKeranjang() {
         const keranjangElement = document.getElementById("detailBelanja");
+        const formBelanja = document.getElementById('formBelanja');
         const count = document.getElementById('count');
+        const jumlahBarang = document.getElementById('jumlahBarang');
         const totalBarang = Object.values(keranjangBelanja).length;
 
         keranjangElement.innerHTML = "";
+        formBelanja.innerHTML = "";
         count.textContent = totalBarang;
+        jumlahBarang.value = totalBarang
 
         // Loop melalui item di keranjang dan tampilkan
         for (const kodeBarang in keranjangBelanja) {
@@ -274,19 +301,43 @@ $result = $transaksiBeli->showBarang();
 
             var col2 = document.createElement('div');
             col2.classList.add('col-sm-2', 'text-center');
-            col2.innerHTML = `${jumlah}`;
+            col2.innerHTML = `${jumlah}<sup>x</sup>`;
 
             var col3 = document.createElement('div');
             col3.classList.add('col-sm-4', 'text-right');
             col3.innerHTML = format;
 
+            var col4 = document.createElement('div');
+            col4.style.display = 'none';
+            col4.innerHTML = `${kodeBarang}`;
+
+            var inputKodeBarang = document.createElement('input');
+            inputKodeBarang.type = 'hidden';
+            inputKodeBarang.name = 'kodeBarang[]';
+            inputKodeBarang.value = `${kodeBarang}`;
+
+            var inputJumlah = document.createElement('input');
+            inputJumlah.type = 'hidden';
+            inputJumlah.name = 'jumlah[]';
+            inputJumlah.value = `${jumlah}`;
+
+            var inputSubtotal = document.createElement('input');
+            inputSubtotal.type = 'hidden';
+            inputSubtotal.name = 'subtotal[]';
+            inputSubtotal.value = `${subtotal}`;
+
             row.appendChild(col1);
             row.appendChild(col2);
             row.appendChild(col3);
+            row.appendChild(col4);
             keranjangElement.appendChild(row);
+            formBelanja.appendChild(inputKodeBarang);
+            formBelanja.appendChild(inputJumlah);
+            formBelanja.appendChild(inputSubtotal);
 
             const totalBelanja = document.getElementById('total')
             const totalBelanja1 = document.getElementById('total1')
+            const totalBelanja2 = document.getElementById('total2')
             const total = Object.values(keranjangBelanja).reduce(function(accumulator, barang) {
                 return accumulator + barang.subtotal;
             }, 0);
@@ -297,13 +348,16 @@ $result = $transaksiBeli->showBarang();
 
             totalBelanja.textContent = format1
             totalBelanja1.value = total
-            console.log(totalBelanja1);
+            totalBelanja2.value = total
+            // console.log(keranjangBelanja);
+            // console.log(`${kodeBarang}`);
         }
     }
 
-    function bayar() {
+    function funcBayar() {
         const totalBelanja = parseInt(document.getElementById('total1').value)
         const bayar = document.getElementById('bayar').value
+        const bayar1 = document.getElementById('bayar1')
         const uang = parseInt(bayar.replace(/,/g, ''), 10);
         const kembalian = document.getElementById('kembalian')
 
@@ -323,8 +377,9 @@ $result = $transaksiBeli->showBarang();
             //     kembalian.value = format;
             // }
             kembalian.value = format;
+            bayar1.value = uang;
         }
-        // console.log(totalBelanja, uang, format);
+        // console.log(totalBelanja, bayar1, format);
     }
 
     function validateInput(input) {
@@ -336,6 +391,18 @@ $result = $transaksiBeli->showBarang();
         }
 
         input.value = value;
+    }
+
+    function submitForm() {
+        const form = document.getElementById("myForm");
+        const bayar = parseInt(document.getElementById('bayar1').value)
+        const total = parseInt(document.getElementById('total1').value)
+        const idUser = parseInt(document.getElementById('idUser').value);
+
+        form.action = "<?= $_SERVER['PHP_SELF']; ?>?page=transaksiBeli";
+        form.method = "POST"
+        form.submit();
+        console.log(bayar, total, idUser);
     }
 </script>
 
