@@ -14,15 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $subtotal = $_POST['subtotal'];
     $totalBarang = $_POST['jumlahBarang'];
     $status = $_POST['status'];
-    // $namaPelanggan = $_POST['Nama_Pelanggan'];
-    // $noTelp = $_POST['No_Telp'];
-    // $alamat = $_POST['Alamat'];
-    // $jumlahHutang = $_POST['Jumlah_Hutang'];
+    $namaPelanggan = $_POST['Nama_Pelanggan'];
+    $noTelp = $_POST['No_Telp'];
+    $alamat = $_POST['Alamat'];
+    $jumlahHutang = $_POST['Jumlah_Hutang'];
 
 
     // var_dump($namaPelanggan, $noTelp, $alamat, $jumlahHutang);
     // var_dump($bayar, $total, $idUser, $kodeBarang, $jumlah, $subtotal, $totalBarang, $status);
-    $transaksiJual->tambah($bayar, $total, $idUser, $kodeBarang, $jumlah, $subtotal, $totalBarang, $status);
+    $transaksiJual->tambah($bayar, $total, $idUser, $kodeBarang, $jumlah, $subtotal, $totalBarang, $status, $namaPelanggan, $noTelp, $alamat, $jumlahHutang);
 }
 
 ?>
@@ -86,11 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Belanja</h1>
+                <h1 class="modal-title fs-5" id="judul">Detail Belanja</h1>
                 <button type="button" class="btn-close" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="card">
+                <div class="card" id="dataBarang">
                     <div class="card-header">
                         <div class="row">
                             <div class="col-sm-6">
@@ -123,32 +123,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 <div class="row mt-3">
                     <form id="myForm" method="POST">
-                        <div id="formBelanja" style="display: none;">
+                        <div id="dataTransaksi">
+                            <div id="formBelanja" style="display: none;">
 
-                        </div>
-                        <div class="col-md-12">
-                            <label for="">Bayar</label>
-                            <input type="text" class="form-control" id="bayar" oninput="if (this.value !== '') funcBayar(); validateInput(this)">
-                        </div>
-                        <div class="col-md-12 mt-3">
-                            <label for="">Kembalian</label>
-                            <input type="text" id="kembalian" class="form-control" readonly>
-                        </div>
-                        <div class="col-md-12 mt-3">
-                            <label for="">Status</label>
-                            <input type="text" id="status" name="status" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="">Bayar</label>
+                                <input type="text" class="form-control" id="bayar" oninput="if (this.value !== '') funcBayar(); validateInput(this)">
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <label for="">Kembalian</label>
+                                <input type="text" id="kembalian" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-12 mt-3 mb-3">
+                                <label for="">Status</label>
+                                <input type="text" id="status" name="status" class="form-control" readonly>
+                            </div>
+
+                            <input type="hidden" id="idUser" name="idUser" value="<?= $_SESSION['idUser']; ?>">
+                            <input type="hidden" id="bayar1" name="bayar1">
+                            <input type="hidden" id="jumlahBarang" name="jumlahBarang">
+                            <input type="hidden" id="total2" name="total">
                         </div>
 
-                        <input type="hidden" id="idUser" name="idUser" value="<?= $_SESSION['idUser']; ?>">
-                        <input type="hidden" id="bayar1" name="bayar1">
-                        <input type="hidden" id="jumlahBarang" name="jumlahBarang">
-                        <input type="hidden" id="total2" name="total">
+                        <div class="" id="dataHutang" style="display: none;">
+                            <div class="mb-3">
+                                <label for="">Nama Pelanggan</label>
+                                <input type="text" name="Nama_Pelanggan" id="namaPelanggan" class="form-control" required>
+                            </div>
+                            <div class=" mb-3">
+                                <label for="">No Telp</label>
+                                <input type="text" name="No_Telp" id="noTelp" class="form-control" pattern="(\+62|62|0)8[1-9][0-9]{8,9}$" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateTelp(this);" oninvalid="validateTelp(this);" required>
+                            </div>
+                            <div class=" mb-3">
+                                <label for="">Alamat</label>
+                                <textarea name="Alamat" id="alamat" cols="30" rows="5" class="form-control"></textarea>
+                            </div>
+                            <div class="" id="">
+                                <label for="">Jumlah Hutang</label>
+                                <input type="text" id="jumlahHutang" class="form-control" required readonly>
+                                <input type="hidden" name="Jumlah_Hutang" id="jumlahHutang1">
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" onclick="submitForm()" id="simpan">Simpan</button>
-                <button type="button" id="buttonHutang" class="btn btn-primary btn-circle" data-bs-toggle="modal" data-bs-target="#hutangModal" style="display: none;">
+                <button type="button" id="buttonHutang" class="btn btn-warning" onclick="simpanHutang()" style="display: none;">Simpan
                 </button>
             </div>
         </div>
@@ -207,23 +229,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="modal-body">
                 <form action="" method="POST" id="formHutang">
-                    <div class="mb-3">
-                        <label for="">Nama Pelanggan</label>
-                        <input type="text" name="Nama_Pelanggan" id="namaPelanggan" class="form-control" required>
-                    </div>
-                    <div class=" mb-3">
-                        <label for="">No Telp</label>
-                        <input type="text" name="No_Telp" id="noTelp" class="form-control" pattern="(\+62|62|0)8[1-9][0-9]{8,9}$" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateTelp(this);" oninvalid="validateTelp(this);" required>
-                    </div>
-                    <div class=" mb-3">
-                        <label for="">Alamat</label>
-                        <textarea name="Alamat" id="alamat" cols="30" rows="5" class="form-control"></textarea>
-                    </div>
-                    <div class="" id="">
-                        <label for="">Jumlah Hutang</label>
-                        <input type="text" id="jumlahHutang" class="form-control" required readonly>
-                        <input type="hidden" name="Jumlah_Hutang" id="jumlahHutang1">
-                    </div>
                     <div class="modal-footer">
                         <button type="submit" id="buttonHutang" class=" btn btn-primary" onclick="simpanHutang()">Simpan</button>
                     </div>
@@ -460,6 +465,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             status.value = 'hutang';
             jumlahHutang.value = format1;
             jumlahHutang1.value = sisa1;
+            bayar1.value = bayar;
         } else {
             // if (isNaN(sisa) || isNaN(format)) {
             //     kembalian.value = "Rp. 0";
@@ -468,45 +474,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //     kembalian.value = format;
             // }
             kembalian.value = format;
-            bayar1.value = uang;
             status.value = 'lunas';
         }
-        // console.log(jumlahHutang1.value);
+        // console.log(bayar1.value = bayar);
     }
 
     function submitForm() {
         const form = document.getElementById("myForm");
         const status = document.getElementById('status').value
-        const close = document.getElementById('close');
+        const dataHutang = document.getElementById('dataHutang');
+        const dataTransaksi = document.getElementById('dataTransaksi');
+        const dataBarang = document.getElementById('dataBarang');
+        const judul = document.getElementById('judul');
+        const buttonSimpan = document.getElementById('simpan');
         const buttonHutang = document.getElementById('buttonHutang');
 
-        form.action = "<?= $_SERVER['PHP_SELF']; ?>?page=transaksiJual";
-        form.method = "POST"
-        form.submit();
-
-        // if (status == 'hutang') {
-        //     buttonHutang.click();
-        //     close.click();
-        // } else {
-        //     form.action = "<?= $_SERVER['PHP_SELF']; ?>?page=transaksiJual";
-        //     form.method = "POST"
-        //     form.submit();
-        // }
+        if (status == 'hutang') {
+            judul.innerHTML = '';
+            dataHutang.style.display = 'block';
+            dataTransaksi.style.display = 'none';
+            dataBarang.style.display = 'none';
+            judul.innerHTML = 'Form Hutang';
+            buttonSimpan.style.display = 'none';
+            buttonHutang.style.display = 'block';
+        } else {
+            form.action = "<?= $_SERVER['PHP_SELF']; ?>?page=transaksiJual";
+            form.method = "POST"
+            form.submit();
+        }
     }
 
-    // function simpanHutang() {
-    //     // console.log('Oke');
-    //     const formHutang = document.getElementById('formHutang')
-    //     // const form = document.getElementById("myForm");
+    function simpanHutang() {
+        // console.log('Oke');
+        const formTransaksi = document.getElementById('myForm');
 
-    //     // form.action = "<?= $_SERVER['PHP_SELF']; ?>?page=transaksiJual";
-    //     // form.method = "POST";
-    //     // form.submit();
+        formTransaksi.action = "<?= $_SERVER['PHP_SELF']; ?>?page=transaksiJual";
+        formTransaksi.method = "POST";
+        formTransaksi.submit();
 
-    //     formHutang.action = "<?= $_SERVER['PHP_SELF']; ?>?page=transaksiJual";
-    //     formHutang.method = 'POST';
-    //     formHutang.submit();
-    // }
+    }
 
     function validateInput(input) {
         // input.value = input.value.replace(/\D/g, "");

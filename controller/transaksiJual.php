@@ -32,7 +32,7 @@ class transaksiJual extends koneksi
         return $nextCode;
     }
 
-    public function tambah($bayar, $total, $idUser, $kodeBarang, $jumlah, $subtotal, $totalBarang, $status)
+    public function tambah($bayar, $total, $idUser, $kodeBarang, $jumlah, $subtotal, $totalBarang, $status, $namaPelanggan, $noTelp, $alamat, $jumlahHutang)
     {
         $kodeTransaksi = $this->kodeTransaksi();
 
@@ -45,13 +45,26 @@ class transaksiJual extends koneksi
                 $result1 = $this->execute($query1);
             }
 
-            if ($result == true && $result1 == true) :
-                $_SESSION['success'] = "Transaksi Berhasil!";
-            else :
-                $_SESSION['error'] = "Transaksi Gagal.";
-            endif;
-            echo '<script>window.location.href="?page=transaksiJual";</script>';
-            exit();
+            if ($status == 'hutang') {
+                $query3 = "INSERT INTO hutang (Nama_Pelanggan, No_Telp, Alamat, Jumlah_Hutang, Kode_TransaksiJual) value ('$namaPelanggan', '$noTelp', '$alamat', '$jumlahHutang', '$kodeTransaksi')";
+                $result3 = $this->execute($query3);
+
+                if ($result == true && $result1 == true && $result3) :
+                    $_SESSION['success'] = "Transaksi Berhasil!";
+                else :
+                    $_SESSION['error'] = "Transaksi Gagal.";
+                endif;
+                echo '<script>window.location.href="?page=transaksiJual";</script>';
+                exit();
+            } else {
+                if ($result == true && $result1 == true) :
+                    $_SESSION['success'] = "Transaksi Berhasil!";
+                else :
+                    $_SESSION['error'] = "Transaksi Gagal.";
+                endif;
+                echo '<script>window.location.href="?page=transaksiJual";</script>';
+                exit();
+            }
 
             // var_dump($result);
         } catch (\Throwable $th) {
