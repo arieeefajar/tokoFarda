@@ -56,12 +56,27 @@
         </div>
     </li>
 
-    <!-- Nav Item - Tables -->
+
     <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#laporanMenu" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-book"></i>
+            <span>Laporan</span>
+        </a>
+        <div id="laporanMenu" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Laporan Menu:</h6>
+                <a class="collapse-item" href="?page=laporanPemasukan">Pemasukan</a>
+                <a class="collapse-item" href="?page=laporanPengeluaran">Pengeluaran</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Tables -->
+    <!-- <li class="nav-item">
         <a class="nav-link" href="tables.html">
             <i class="fas fa-fw fa-table"></i>
             <span>Tables</span></a>
-    </li>
+    </li> -->
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

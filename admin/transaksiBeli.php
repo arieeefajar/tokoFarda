@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <button type="button" id="buttonKeranjang" class="btn btn-warning btn-icon-split mb-3" data-bs-toggle="modal" data-bs-target="#kranjangModal" onclick="funcBayar()">
+                <button type="button" id="buttonKeranjang" class="btn btn-warning btn-icon-split mb-3" data-bs-toggle="modal" data-bs-target="#kranjangModal" onclick="reSet()">
                     <span class="icon text-white-50">
                         <i class="fas fa-cart-arrow-down"></i>
                     </span>
@@ -359,7 +359,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         const bayar = document.getElementById('bayar').value
         const bayar1 = document.getElementById('bayar1')
         const uang = parseInt(bayar.replace(/,/g, ''), 10);
-        const kembalian = document.getElementById('kembalian')
+        const kembalian = document.getElementById('kembalian');
+        const buttonSimpan = document.getElementById('simpan');
 
         const sisa = uang - totalBelanja;
         var format = sisa.toLocaleString('id-ID', {
@@ -378,6 +379,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // }
             kembalian.value = format;
             bayar1.value = uang;
+            buttonSimpan.disabled = false;
         }
         // console.log(totalBelanja, bayar1, format);
     }
@@ -403,6 +405,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         form.method = "POST"
         form.submit();
         console.log(bayar, total, idUser);
+    }
+
+    function reSet() {
+        const kembalian = document.getElementById('kembalian');
+        const buttonSimpan = document.getElementById('simpan');
+
+        buttonSimpan.disabled = true;
+        kembalian.value = "";
     }
 </script>
 

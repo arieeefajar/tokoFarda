@@ -85,6 +85,10 @@ if (!isset($_SESSION["idUser"])) {
                         include '../admin/keranjang.php';
                     } elseif ($_GET['page'] == 'transaksiBeli') {
                         include '../admin/transaksiBeli.php';
+                    } elseif ($_GET['page'] == 'laporanPemasukan') {
+                        include '../admin/laporanPemasukan.php';
+                    } elseif ($_GET['page'] == 'laporanPengeluaran') {
+                        include '../admin/laporanPengeluaran.php';
                     }
                     ?>
 
