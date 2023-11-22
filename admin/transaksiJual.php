@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <button type="button" id="buttonKeranjang" class="btn btn-warning btn-icon-split mb-3" data-bs-toggle="modal" data-bs-target="#kranjangModal" onclick="funcBayar()">
+                <button type="button" id="buttonKeranjang" class="btn btn-warning btn-icon-split mb-3" data-bs-toggle="modal" data-bs-target="#kranjangModal" onclick="reSet()">
                     <span class="icon text-white-50">
                         <i class="fas fa-cart-arrow-down"></i>
                     </span>
@@ -169,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" onclick="submitForm()" id="simpan">Simpan</button>
+                <button class="btn btn-primary" onclick="submitForm()" id="simpan" disabled>Simpan</button>
                 <button type="button" id="buttonHutang" class="btn btn-warning" onclick="simpanHutang()" style="display: none;">Simpan
                 </button>
             </div>
@@ -212,25 +212,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="modal-footer">
                         <button type="button" id="tutup" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <button type="button" id="tambah" disabled="true" class="btn btn-primary" onclick="tambahBarang()">Tambah Keranjang</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- hutang modal -->
-<div class="modal fade" id="hutangModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Hutang</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="" method="POST" id="formHutang">
-                    <div class="modal-footer">
-                        <button type="submit" id="buttonHutang" class=" btn btn-primary" onclick="simpanHutang()">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -438,6 +419,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     function funcBayar() {
+        const buttonSimpan = document.getElementById('simpan');
         const totalBelanja = parseInt(document.getElementById('total1').value)
         const bayar = document.getElementById('bayar').value
         const bayar1 = document.getElementById('bayar1')
@@ -466,6 +448,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             jumlahHutang.value = format1;
             jumlahHutang1.value = sisa1;
             bayar1.value = bayar;
+            buttonSimpan.disabled = false;
         } else {
             // if (isNaN(sisa) || isNaN(format)) {
             //     kembalian.value = "Rp. 0";
@@ -475,6 +458,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // }
             kembalian.value = format;
             status.value = 'lunas';
+            buttonSimpan.disabled = false;
         }
         // console.log(bayar1.value = bayar);
     }
@@ -532,5 +516,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     function rupiah($angka) {
         $hasil_rupiah = "Rp. ".number_format($angka, 0, ',', '.');
         return $hasil_rupiah;
+    }
+
+    function reSet() {
+        const bayar = document.getElementById('bayar');
+        const kembalian = document.getElementById('kembalian');
+        const status = document.getElementById('status');
+
+        bayar.value = "";
+        kembalian.value = "";
+        status.value = "";
     }
 </script>
