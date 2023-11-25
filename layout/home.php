@@ -24,6 +24,14 @@ if (!isset($_SESSION["idUser"])) {
             Data User
         <?php elseif ($_GET['page'] == 'dataBarang') : ?>
             Data Barang
+        <?php elseif ($_GET['page'] == 'transaksiJual') : ?>
+            Transaksi Jual
+        <?php elseif ($_GET['page'] == 'transaksiBeli') : ?>
+            Transaksi Beli
+        <?php elseif ($_GET['page'] == 'laporanPemasukan') : ?>
+            Laporan Pemasukan
+        <?php elseif ($_GET['page'] == 'laporanPengeluaran') : ?>
+            Laporan laporanPengeluaran
         <?php endif; ?>
     </title>
 
