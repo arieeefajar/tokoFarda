@@ -121,7 +121,9 @@ $result5 = $dashboard->dataStokBarang();
             </div>
             <!-- Card Body -->
             <div class="card-body">
-                <iframe title="Report Section" width="400" height="400" src="https://app.powerbi.com/view?r=eyJrIjoiODRlODdmMWMtZWViNS00MmZlLWFmMjgtOWNmYzQwNDgxNjE0IiwidCI6IjUyNjNjYzgxLTU5MTItNDJjNC1hYmMxLWQwZjFiNjY4YjUzMCIsImMiOjEwfQ%3D%3D&embedImagePlaceholder=true" frameborder="0" allowFullScreen="true"></iframe>
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe title="Report Section" src="https://app.powerbi.com/view?r=eyJrIjoiODRlODdmMWMtZWViNS00MmZlLWFmMjgtOWNmYzQwNDgxNjE0IiwidCI6IjUyNjNjYzgxLTU5MTItNDJjNC1hYmMxLWQwZjFiNjY4YjUzMCIsImMiOjEwfQ%3D%3D&focusMode=true" frameborder="0" allowFullScreen="true"></iframe>
+                </div>
             </div>
         </div>
     </div>
