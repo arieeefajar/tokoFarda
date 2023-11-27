@@ -11,6 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // var_dump($tanggalMulai, $tanggalSampai);
     $result = $laporan->laporanPendapatan($tanggalMulai, $tanggalSampai);
     $result1 = $laporan->totalPendapatan($tanggalMulai, $tanggalSampai);
+
+    $timestamp = strtotime($tanggalMulai);
+    $formattedDate = date("d F Y", $timestamp);
+
+    $timestamp1 = strtotime($tanggalSampai);
+    $formattedDate1 = date("d F Y", $timestamp1);
 }
 ?>
 
@@ -23,14 +29,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="row">
                 <div class="col-md-6">
                     <label for="">Mulai dari :</label>
-                    <input type="date" name="tanggalMulai" class="form-control">
+                    <input type="date" name="tanggalMulai" id="tanggalMulai" class="form-control" value="<?= $tanggalMulai; ?>">
                 </div>
                 <div class="col-md-6">
                     <label for="">Sampai dari :</label>
-                    <input type="date" name="tanggalSampai" class="form-control" onchange="submitFrom()">
+                    <input type="date" name="tanggalSampai" id="tanggalSampai" class="form-control" onchange="submitFrom();" value="<?= $tanggalSampai; ?>">
                 </div>
             </div>
         </form>
+
+        <!-- <form action="" id="formTanggal1">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="">Mulai dari :</label>
+                    <input type="date" name="tanggalMulai1" id="tanggalMulai1" class="form-control" value="<?= $tanggalMulai; ?>">
+                </div>
+                <div class="col-md-6">
+                    <label for="">Sampai dari :</label>
+                    <input type="date" name="tanggalSampai1" id="tanggalSampai1" class="form-control" value="<?= $tanggalSampai; ?>">
+                </div>
+            </div>
+        </form> -->
     </div>
 </div>
 
@@ -40,13 +59,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <div class="alert alert-success alert-dismissible fade show mt-4" role="alert" id="alertSuccess">
     <?php if (isset($tanggalMulai) && isset($tanggalSampai)) : ?>
-        Berikut adalah laporan pemasukan dari tanggal <strong><?= $tanggalMulai; ?></strong> sampai tanggal <strong><?= $tanggalSampai; ?></strong>
+        Berikut adalah laporan pemasukan dari tanggal <strong><?= $formattedDate; ?></strong> sampai tanggal <strong><?= $formattedDate1; ?></strong>
     <?php endif; ?>
 </div>
 
 <div class="card mt-4" id="tablePemasukan" style="display: none;">
-    <div class="card-header">
+    <div class="card-header d-sm-flex align-items-center justify-content-between mb-4">
         Data Laporan Pemasukan
+        <form action="../cetak/laporanPemasukan.php" method="POST">
+            <input type="hidden" name="tanggalMulai1" value="<?= $tanggalMulai; ?>">
+            <input type="hidden" name="tanggalSampai1" value="<?= $tanggalSampai; ?>">
+            <button type="submit" name="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Cetak</button>
+        </form>
+        <!-- <a href="../cetak/laporanPemasukan.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Cetak</a> -->
     </div>
     <div class="card-body">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

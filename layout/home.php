@@ -76,12 +76,10 @@ if (!isset($_SESSION["idUser"])) {
                     <!-- Page Heading -->
                     <?php
                     if (empty($_GET['page'])) {
-                        if ($_SESSION['Level'] == 'Admin') {
-                            include '../admin/dashboard.php';
-                        } elseif ($_SESSION['Level'] == 'Kasir') {
+                        if ($_SESSION['Level'] == 'Kasir') {
                             include '../admin/kDashboard.php';
                         } else {
-                            include '../admin/oDashboard.php';
+                            include '../admin/dashboard.php';
                         }
                     } elseif ($_GET['page'] == 'dataUser') {
                         include '../admin/dataUser.php';
