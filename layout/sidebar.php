@@ -26,50 +26,103 @@
         Menu
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Master</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Master Menu:</h6>
-                <a class="collapse-item" href="?page=dataUser">Data User</a>
-                <a class="collapse-item" href="?page=dataBarang">Data Barang</a>
-            </div>
-        </div>
-    </li>
+    <?php if ($_SESSION['level'] == "Admin") { ?>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transaksiMenu" aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-money-bill-wave"></i>
-            <span>Transaksi</span>
-        </a>
-        <div id="transaksiMenu" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Transaksi Menu:</h6>
-                <a class="collapse-item" href="?page=transaksiJual">Jual</a>
-                <a class="collapse-item" href="?page=transaksiBeli">Beli</a>
+        <!-- Master menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Master</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Master Menu:</h6>
+                    <a class="collapse-item" href="?page=dataUser">Data User</a>
+                    <a class="collapse-item" href="?page=dataBarang">Data Barang</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
 
-
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#laporanMenu" aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-book"></i>
-            <span>Laporan</span>
-        </a>
-        <div id="laporanMenu" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Laporan Menu:</h6>
-                <a class="collapse-item" href="?page=laporanPemasukan">Pemasukan</a>
-                <a class="collapse-item" href="?page=laporanPengeluaran">Pengeluaran</a>
+        <!-- Transaksi menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transaksiMenu" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Transaksi</span>
+            </a>
+            <div id="transaksiMenu" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Transaksi Menu:</h6>
+                    <a class="collapse-item" href="?page=transaksiJual">Jual</a>
+                    <a class="collapse-item" href="?page=transaksiBeli">Beli</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
+
+        <!-- Laporan menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#laporanMenu" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-book"></i>
+                <span>Laporan</span>
+            </a>
+            <div id="laporanMenu" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Laporan Menu:</h6>
+                    <a class="collapse-item" href="?page=laporanPemasukan">Pemasukan</a>
+                    <a class="collapse-item" href="?page=laporanPengeluaran">Pengeluaran</a>
+                </div>
+            </div>
+        </li>
+
+    <?php } elseif ($_SESSION['level'] == "Kasir") { ?>
+
+        <!-- Transaksi menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transaksiMenu" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Transaksi</span>
+            </a>
+            <div id="transaksiMenu" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Transaksi Menu:</h6>
+                    <a class="collapse-item" href="?page=transaksiJual">Jual</a>
+                    <a class="collapse-item" href="?page=transaksiBeli">Beli</a>
+                </div>
+            </div>
+        </li>
+
+    <?php } else { ?>
+
+        <!-- Master menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Master</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Master Menu:</h6>
+                    <a class="collapse-item" href="?page=dataUser">Data User</a>
+                    <a class="collapse-item" href="?page=dataBarang">Data Barang</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Laporan menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#laporanMenu" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-book"></i>
+                <span>Laporan</span>
+            </a>
+            <div id="laporanMenu" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Laporan Menu:</h6>
+                    <a class="collapse-item" href="?page=laporanPemasukan">Pemasukan</a>
+                    <a class="collapse-item" href="?page=laporanPengeluaran">Pengeluaran</a>
+                </div>
+            </div>
+        </li>
+
+    <?php } ?>
 
     <!-- Nav Item - Tables -->
     <!-- <li class="nav-item">

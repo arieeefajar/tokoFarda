@@ -11,6 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // var_dump($tanggalMulai, $tanggalSampai);
     $result = $laporan->laporanPengeluaran($tanggalMulai, $tanggalSampai);
     $result1 = $laporan->totalPengeluaran($tanggalMulai, $tanggalSampai);
+
+    $timestamp = strtotime($tanggalMulai);
+    $formattedDate = date("d F Y", $timestamp);
+
+    $timestamp1 = strtotime($tanggalSampai);
+    $formattedDate1 = date("d F Y", $timestamp1);
 }
 ?>
 
@@ -37,13 +43,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <div class="alert alert-success alert-dismissible fade show mt-4" role="alert" id="alertSuccess">
     <?php if (isset($tanggalMulai) && isset($tanggalSampai)) : ?>
-        Berikut adalah laporan pengeluaran dari tanggal <strong><?= $tanggalMulai; ?></strong> sampai tanggal <strong><?= $tanggalSampai; ?></strong>
+        Berikut adalah laporan pengeluaran dari tanggal <strong><?= $formattedDate; ?></strong> sampai tanggal <strong><?= $formattedDate1; ?></strong>
     <?php endif; ?>
 </div>
 
 <div class="card mt-4" id="tablePemasukan" style="display: none;">
-    <div class="card-header">
+    <div class="card-header d-sm-flex align-items-center justify-content-between mb-4">
         Laporan Penjualan
+        <form action="../cetak/laporanPengeluaran.php" method="POST">
+            <input type="hidden" name="tanggalMulai1" value="<?= $tanggalMulai; ?>">
+            <input type="hidden" name="tanggalSampai1" value="<?= $tanggalSampai; ?>">
+            <button type="submit" name="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Cetak</button>
+        </form>
     </div>
     <div class="card-body">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -65,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </tbody>
         </table>
     </div>
-    <div class="card-footer text-end">
+    <div class="card-footer text-right">
         <label for=""><strong>Total Pengeluaran :</strong></label>
         <?php foreach ($result1 as $key => $data) : ?>
             <label for=""><strong>Rp. <?= number_format($data['totalPengeluaran']); ?></strong></label>
