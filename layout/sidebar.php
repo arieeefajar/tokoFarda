@@ -39,6 +39,7 @@
                     <h6 class="collapse-header">Master Menu:</h6>
                     <a class="collapse-item" href="?page=dataUser">Data User</a>
                     <a class="collapse-item" href="?page=dataBarang">Data Barang</a>
+                    <a class="collapse-item" href="?page=dataHutang">Data Hutang</a>
                 </div>
             </div>
         </li>
@@ -103,6 +104,7 @@
                     <h6 class="collapse-header">Master Menu:</h6>
                     <a class="collapse-item" href="?page=dataUser">Data User</a>
                     <a class="collapse-item" href="?page=dataBarang">Data Barang</a>
+                    <a class="collapse-item" href="?page=dataHutang">Data Hutang</a>
                 </div>
             </div>
         </li>
