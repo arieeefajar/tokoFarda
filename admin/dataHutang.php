@@ -13,9 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $status = $_POST['Status'];
         $idHutang = $_POST['id_Hutang'];
         $dataHutang->delete($status, $kodeTransaksi, $idHutang);
-    } else {
-        $sisa = $_POST['Sisa'];
+    } elseif ($status == 'Hutang') {
+        $sisa = $_POST['Sisa1'];
         $idHutang = $_POST['id_Hutang'];
+        // var_dump($sisa);
         $dataHutang->edit($sisa, $idHutang);
     }
 }
@@ -106,6 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
 
                     <input type="hidden" name="Jumlah_Hutang1" id="jumlahHutang1">
+                    <input type="hidden" name="Sisa1" id="Sisa1">
                     <input type="hidden" name="id_Hutang" id="idHutang">
                     <input type="hidden" name="Kode_TransaksiJual" id="kodeTransaksi">
 
@@ -159,17 +161,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         const bayar = document.getElementById('Bayar').value;
         const uang = parseInt(bayar.replace(/,/g, ''), 10);
         const sisa = document.getElementById('Sisa');
+        const sisa1 = document.getElementById('Sisa1');
         const kembalian = document.getElementById('Kembalian');
         const status = document.getElementById('Status');
         const hasil = jumlahHutang - uang;
 
         if (hasil > 0) {
             sisa.value = formatAngka(hasil);
+            sisa1.value = hasil;
             status.value = 'Hutang';
             kembalian.value = 0;
             // console.log(sisa);
         } else {
-            sisa.value = 0
+            sisa.value = 0;
+            sisa1.value = 0;
             status.value = 'Lunas';
             kembalian.value = formatAngka(uang - jumlahHutang);
         }
