@@ -21,7 +21,7 @@ class dataHutang extends koneksi
             echo '<script>window.location.href="?page=dataHutang";</script>';
             exit();
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
@@ -42,7 +42,7 @@ class dataHutang extends koneksi
             echo '<script>window.location.href="?page=dataHutang";</script>';
             exit();
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
     }
 }
