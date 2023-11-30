@@ -24,6 +24,8 @@ if (!isset($_SESSION["idUser"])) {
             Data User
         <?php elseif ($_GET['page'] == 'dataBarang') : ?>
             Data Barang
+        <?php elseif ($_GET['page'] == 'dataHutang') : ?>
+            Data Hutang
         <?php elseif ($_GET['page'] == 'transaksiJual') : ?>
             Transaksi Jual
         <?php elseif ($_GET['page'] == 'transaksiBeli') : ?>
@@ -31,7 +33,7 @@ if (!isset($_SESSION["idUser"])) {
         <?php elseif ($_GET['page'] == 'laporanPemasukan') : ?>
             Laporan Pemasukan
         <?php elseif ($_GET['page'] == 'laporanPengeluaran') : ?>
-            Laporan laporanPengeluaran
+            Laporan Pengeluaran
         <?php endif; ?>
     </title>
 
@@ -85,6 +87,8 @@ if (!isset($_SESSION["idUser"])) {
                         include '../admin/dataUser.php';
                     } elseif ($_GET['page'] == 'dataBarang') {
                         include '../admin/dataBarang.php';
+                    } elseif ($_GET['page'] == 'dataHutang') {
+                        include '../admin/dataHutang.php';
                     } elseif ($_GET['page'] == 'transaksiJual') {
                         include '../admin/transaksiJual.php';
                     } elseif ($_GET['page'] == 'keranjang') {
