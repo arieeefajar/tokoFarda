@@ -1,5 +1,14 @@
 <?php
-session_start();
+require '../koneksi.php';
+require '../controller/lupaPasswordController.php';
+
+$lupaPassword = new lupaPassword();
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = $_POST['Email'];
+    $lupaPassword->findEmail($email);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,11 +21,11 @@ session_start();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Login | Toko Farda</title>
+    <title>Verifikasi Email | Toko Farda</title>
 
     <!-- Custom fonts for this template-->
     <link href="<?= 'http://localhost/SI/tokoFarda/' ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="<?= 'http://localhost/SI/tokoFarda/' ?>https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?= 'http://localhost/SI/tokoFarda/' ?>css/sb-admin-2.min.css" rel="stylesheet">
@@ -33,36 +42,32 @@ session_start();
         <!-- Outer Row -->
         <div class="row justify-content-center">
 
-            <div class="col-xl-10 col-lg-12 col-md-9 mt-5">
+            <div class="col-xl-10 col-lg-12 col-md-9">
 
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6 d-none d-lg-block bg-password-image"></div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-2">Forgot Your Password?</h1>
+                                        <p class="mb-4">We get it, stuff happens. Just enter your email address below
+                                            and we'll send you a link to reset your password!</p>
                                     </div>
-                                    <form class="user" method="post" action="./auth/cek_login.php">
+                                    <form action="<?= $_SERVER['PHP_SELF']; ?>" method="POST" class="user">
                                         <div class="form-group">
-                                            <input type="text" name="Username" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Masukan Username" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="password" name="Password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" required>
+                                            <input type="email" name="Email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." required>
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Login
+                                            Verifikasi Email
                                         </button>
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="auth/verifikasiEmail.php">Forgot Password?</a>
+                                        <a class="small" href="../index.php">Sudah punya akun? Login!</a>
                                     </div>
-                                    <!-- <div class="text-center">
-                                        <a class="small" href="register.php">Create an Account!</a>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>

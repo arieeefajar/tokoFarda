@@ -1,5 +1,17 @@
 <?php
-session_start();
+require '../koneksi.php';
+require '../controller/lupaPasswordController.php';
+
+$lupaPassword = new lupaPassword();
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $newPassword = md5($_POST['newPassword']);
+    $confirmPass = md5($_POST['confirmPassword']);
+    $idUser = $_SESSION['id'];
+    // var_dump($newPassword, $confirmPass);
+    $lupaPassword->updatePassword($newPassword, $confirmPass, $idUser);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,11 +24,11 @@ session_start();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Login | Toko Farda</title>
+    <title>Lupa Password | Toko Farda</title>
 
     <!-- Custom fonts for this template-->
     <link href="<?= 'http://localhost/SI/tokoFarda/' ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="<?= 'http://localhost/SI/tokoFarda/' ?>https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?= 'http://localhost/SI/tokoFarda/' ?>css/sb-admin-2.min.css" rel="stylesheet">
@@ -33,36 +45,31 @@ session_start();
         <!-- Outer Row -->
         <div class="row justify-content-center">
 
-            <div class="col-xl-10 col-lg-12 col-md-9 mt-5">
+            <div class="col-xl-5 col-lg-12 col-md-9 mt-5">
 
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-5">Form Ubah Password</h1>
                                     </div>
-                                    <form class="user" method="post" action="./auth/cek_login.php">
+                                    <form action="<?= $_SERVER['PHP_SELF']; ?>" method="POST" class="user">
                                         <div class="form-group">
-                                            <input type="text" name="Username" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Masukan Username" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="password" name="Password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" required>
+                                            <div class="mb-3">
+                                                <input type="password" name="newPassword" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Masukan password baru..." required>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <input type="password" name="confirmPassword" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Konfirmasi password baru..." required>
+                                            </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Login
+                                            Reset Password
                                         </button>
                                     </form>
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="auth/verifikasiEmail.php">Forgot Password?</a>
-                                    </div>
-                                    <!-- <div class="text-center">
-                                        <a class="small" href="register.php">Create an Account!</a>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -89,17 +96,6 @@ session_start();
     <script src="<?= 'http://localhost/SI/tokoFarda/'; ?>sweetalert2/sweetalert2.min.js"></script>
 
     <script>
-        <?php if (isset($_SESSION['success'])) : ?>
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: '<?= $_SESSION['success']; ?>',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        <?php unset($_SESSION['success']);
-        endif; ?>
-
         <?php if (isset($_SESSION['error'])) : ?>
             Swal.fire({
                 position: 'center',
