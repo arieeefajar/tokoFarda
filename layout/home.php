@@ -34,8 +34,12 @@ if (!isset($_SESSION["idUser"])) {
             Laporan Pemasukan
         <?php elseif ($_GET['page'] == 'laporanPengeluaran') : ?>
             Laporan Pengeluaran
+        <?php elseif ($_GET['page'] == 'profile') : ?>
+            Profile
         <?php endif; ?>
     </title>
+
+    <link rel="shortcut icon" href="<?= 'http://localhost/SI/tokoFarda/' ?>img/1.png">
 
     <!-- Custom fonts for this template-->
     <link href="<?= 'http://localhost/SI/tokoFarda/'; ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -99,6 +103,8 @@ if (!isset($_SESSION["idUser"])) {
                         include '../admin/laporanPemasukan.php';
                     } elseif ($_GET['page'] == 'laporanPengeluaran') {
                         include '../admin/laporanPengeluaran.php';
+                    } elseif ($_GET['page'] == 'profile') {
+                        include '../admin/profile.php';
                     }
                     ?>
 
