@@ -29,12 +29,6 @@ if ($num != 0) {
 
     header('location: ../layout/home.php');
 } else {
-    session_destroy();
-?>
-    <script>
-        alert('Username atau Password tidak ditemukan');
-        window.location = "../index.php";
-    </script>
-<?php
+    $_SESSION['error'] = 'Username atau Password tidak ditemukan';
+    echo '<script>window.location.href="../index.php";</script>';
 }
-?>
