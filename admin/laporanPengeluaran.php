@@ -54,6 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="hidden" name="tanggalMulai1" value="<?= $tanggalMulai; ?>">
             <input type="hidden" name="tanggalSampai1" value="<?= $tanggalSampai; ?>">
             <button type="submit" name="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Cetak</button>
+            <button type="submit" name="submit" class="d-sm-none btn btn-sm btn-primary shadow-sm mt-3">
+                <i class="fas fa-download fa-sm text-white-50"></i> Cetak
+            </button>
         </form>
     </div>
     <div class="card-body">
