@@ -59,6 +59,22 @@
             </div>
         </li>
 
+        <!-- History menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#historiMenu" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-clock"></i>
+                <span>Histori</span>
+            </a>
+            <div id="historiMenu" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Histori Menu:</h6>
+                    <a class="collapse-item" href="?page=historiJual">Jual</a>
+                    <a class="collapse-item" href="?page=historiBeli">Beli</a>
+                </div>
+            </div>
+        </li>
+
+
         <!-- Laporan menu -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#laporanMenu" aria-expanded="true" aria-controls="collapseTwo">
@@ -105,6 +121,21 @@
                     <a class="collapse-item" href="?page=dataUser">Data User</a>
                     <a class="collapse-item" href="?page=dataBarang">Data Barang</a>
                     <a class="collapse-item" href="?page=dataHutang">Data Hutang</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- History menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#historiMenu" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-clock"></i>
+                <span>Histori</span>
+            </a>
+            <div id="historiMenu" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Histori Menu:</h6>
+                    <a class="collapse-item" href="?page=historiJual">Jual</a>
+                    <a class="collapse-item" href="?page=historiBeli">Beli</a>
                 </div>
             </div>
         </li>

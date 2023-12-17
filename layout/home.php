@@ -36,6 +36,10 @@ if (!isset($_SESSION["idUser"])) {
             Laporan Pengeluaran
         <?php elseif ($_GET['page'] == 'profile') : ?>
             Profile
+        <?php elseif ($_GET['page'] == 'historiJual') : ?>
+            History Jual
+        <?php elseif ($_GET['page'] == 'historiBeli') : ?>
+            Histori Beli
         <?php endif; ?>
     </title>
 
@@ -105,6 +109,10 @@ if (!isset($_SESSION["idUser"])) {
                         include '../admin/laporanPengeluaran.php';
                     } elseif ($_GET['page'] == 'profile') {
                         include '../admin/profile.php';
+                    } elseif ($_GET['page'] == 'historiJual') {
+                        include '../admin/historiJual.php';
+                    } elseif ($_GET['page'] == 'historiBeli') {
+                        include '../admin/historiBeli.php';
                     }
                     ?>
 
